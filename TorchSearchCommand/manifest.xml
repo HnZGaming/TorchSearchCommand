@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<PluginManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <Name>Search Command</Name>
+
+  <Guid>f1002b90-6c08-4939-8843-628e4323965d</Guid>
+
+  <Repository>None</Repository>
+
+  <Version>v1.0.0</Version>
+
+</PluginManifest>
