@@ -27,12 +27,11 @@ namespace SearchCommand
                     if (optionKey == "limit" && int.TryParse(optionValue, out limit))
                     {
                         // got limit option
+                        continue;
                     }
-                    else
-                    {
-                        Context.Respond($"Unknown option: {arg}", Color.Red);
-                        return;
-                    }
+
+                    Context.Respond($"Unknown option: {arg}", Color.Red);
+                    return;
                 }
 
                 searcher.AddKeyword(arg);
@@ -76,7 +75,7 @@ namespace SearchCommand
             }
 
             var msg = new StringBuilder();
-            msg.AppendLine("Commands found:");
+            msg.AppendLine($"Commands found ({resultCommands.Length}):");
             foreach (var resultCommand in resultCommands)
             {
                 msg.AppendLine($"{resultCommand.SyntaxHelp}");

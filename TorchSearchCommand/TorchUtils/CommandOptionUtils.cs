@@ -4,7 +4,7 @@ namespace TorchUtils
 {
     internal static class CommandOptionUtils
     {
-        static readonly Regex _optionRegex = new Regex(@"--(\w+?)=([^ ]+?)");
+        static readonly Regex _optionRegex = new Regex(@"--(\w+?)=(.+?)(?: |$)");
 
         public static bool TryParseOption(this string arg, out string key, out string value)
         {
