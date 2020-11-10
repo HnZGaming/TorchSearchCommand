@@ -1,7 +1,7 @@
 TorchSearchCommand
 ===
 
-Searches for commands by keywords.
+Search anything in the game with Levenshtein distance algorithm.
 
 How To Install
 ---
@@ -11,8 +11,19 @@ Prop it in the Plugin folder.
 How To Use
 ---
 
-    !sc <keyword(s)> --limit=N
-    
-* Exact matches -- highest order
-* "Like" matches -- highest order
-* Levenshtein distance -- for typo
+### Search Torch Commands
+
+```
+!sc <keyword(s)> --limit=N
+```
+
+### Search Online Players
+
+```
+!sp <keyword(s)> -limit=N -copy -gps
+```
+
+### Search Grids
+
+WIP
+
