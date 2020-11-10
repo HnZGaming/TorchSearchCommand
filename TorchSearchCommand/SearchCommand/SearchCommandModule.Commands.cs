@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
-using SearchCommand.Search;
+using NLog;
+using SearchCommand.Core;
 using Torch.Commands;
 using Torch.Commands.Permissions;
 using TorchUtils;
@@ -10,11 +11,13 @@ using Torch.API.Managers;
 
 namespace SearchCommand
 {
-    public sealed class SearchCommandModule : CommandModule
+    public sealed partial class SearchCommandModule : CommandModule
     {
-        [Command("sc", "Searches for commands by keywords. --limit=N to set the number of search results.")]
+        static readonly ILogger Log = LogManager.GetCurrentClassLogger();
+
+        [Command("sc", "Searches for commands by keywords. -limit=N the number of search results.")]
         [Permission(MyPromoteLevel.None)]
-        public void SearchCommands()
+        public void SearchCommands() => this.CatchAndReport(() =>
         {
             var searcher = new StringSimilaritySearcher<Command>(5);
 
@@ -22,9 +25,10 @@ namespace SearchCommand
 
             foreach (var arg in Context.Args)
             {
-                if (arg.TryParseOption(out var optionKey, out var optionValue))
+                if (CommandOption.TryGetOption(arg, out var option))
                 {
-                    if (optionKey == "limit" && int.TryParse(optionValue, out limit))
+                    if (option.TryParse("limit", out var optionValue) &&
+                        int.TryParse(optionValue, out limit))
                     {
                         // got limit option
                         continue;
@@ -60,29 +64,22 @@ namespace SearchCommand
                 searcher.AddDictionaryWord(command, command.Description ?? "");
             }
 
-            var scores = searcher.CalcSimilarity();
-            var resultCommands = scores
-                .OrderByDescending(md => md.Similarity)
-                .Where(md => md.Similarity > 0)
-                .Take(limit)
-                .Select(md => md.Key)
-                .ToArray();
-
-            if (!resultCommands.Any())
+            var results = searcher.CalcSimilarityAndOrder(limit);
+            if (!results.Any())
             {
                 Context.Respond($"Command not found by keyword(s): \"{Context.RawArgs}\"");
                 return;
             }
 
             var msg = new StringBuilder();
-            msg.AppendLine($"Commands found ({resultCommands.Length}):");
-            foreach (var resultCommand in resultCommands)
+            msg.AppendLine($"Commands found ({results.Length}):");
+            foreach (var resultCommand in results)
             {
                 msg.AppendLine($"{resultCommand.SyntaxHelp}");
                 msg.AppendLine($" -- {resultCommand.Description}");
             }
 
             Context.Respond(msg.ToString());
-        }
+        });
     }
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NLog;
 
-namespace SearchCommand.Search
+namespace SearchCommand.Core
 {
-    internal class StringSimilaritySearcher<K>
+    public class StringSimilaritySearcher<K>
     {
         readonly ILogger Log = LogManager.GetCurrentClassLogger();
         readonly char[] _splits = {' ', ',', '.', ':', ';', '/', '!', '?', '-'};
@@ -89,6 +89,16 @@ namespace SearchCommand.Search
             if (distance > _thresholdDistance) return 0f; // too far
 
             return _thresholdDistance - distance;
+        }
+
+        public K[] CalcSimilarityAndOrder(int limit)
+        {
+            return CalcSimilarity()
+                .OrderByDescending(md => md.Similarity)
+                .Where(md => md.Similarity > 0)
+                .Take(limit)
+                .Select(md => md.Key)
+                .ToArray();
         }
     }
 }

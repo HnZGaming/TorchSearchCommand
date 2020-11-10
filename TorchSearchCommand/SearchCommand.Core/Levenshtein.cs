@@ -1,4 +1,4 @@
-﻿﻿namespace SearchCommand.Search
+﻿namespace SearchCommand.Core
 {
     // Modified version of https://github.com/DanHarltey/Fastenshtein/blob/master/src/Fastenshtein/Levenshtein.cs
     // Original license to https://github.com/DanHarltey/Fastenshtein/blob/master/LICENSE
@@ -7,7 +7,7 @@
     ///     Measures the difference between two strings.
     ///     Uses the Levenshtein string difference algorithm.
     /// </summary>
-    internal sealed class Levenshtein
+    public sealed class Levenshtein
     {
         readonly int[] costs;
         /*
