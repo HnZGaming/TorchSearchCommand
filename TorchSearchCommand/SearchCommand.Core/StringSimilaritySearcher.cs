@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using NLog;
 
 namespace SearchCommand.Core
@@ -30,11 +31,13 @@ namespace SearchCommand.Core
                 .Select(w => w.ToLower());
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddKeyword(string keyword)
         {
             _keywords.AddRange(SplitWords(keyword));
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddDictionaryWord(K key, string word)
         {
             if (!_dictionary.TryGetValue(key, out var words))
@@ -46,6 +49,7 @@ namespace SearchCommand.Core
             words.AddRange(SplitWords(word));
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<(K Key, float Similarity)> CalcSimilarity()
         {
             var levs = new List<Levenshtein>();
