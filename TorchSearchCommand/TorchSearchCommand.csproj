@@ -150,6 +150,8 @@
         <Compile Include="SearchCommand.Core\Levenshtein.cs" />
         <Compile Include="SearchCommand.Core\StringSimilaritySearcher.cs" />
         <Compile Include="SearchCommand\SearchCommandModule.Commands.cs" />
+        <Compile Include="SearchCommand\SearchCommandModule.cs" />
+        <Compile Include="SearchCommand\SearchCommandModule.Grids.cs" />
         <Compile Include="SearchCommand\SearchCommandModule.Players.cs" />
         <Compile Include="SearchCommand\SearchCommandPlugin.cs" />
         <Compile Include="TorchUtils\AbsJsonConverter.cs" />

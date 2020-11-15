@@ -1,10 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
-using Sandbox.Game.Multiplayer;
-using Sandbox.Game.Screens.Helpers;
 using Sandbox.Game.World;
-using Sandbox.ModAPI;
 using SearchCommand.Core;
 using Torch.Commands;
 using Torch.Commands.Permissions;
@@ -24,7 +20,7 @@ namespace SearchCommand
         [Permission(MyPromoteLevel.None)]
         public void SearchPlayers() => this.CatchAndReport(() =>
         {
-            var searcher = new StringSimilaritySearcher<MyPlayer>(10);
+            var searcher = new StringSimilaritySearcher<MyPlayer>(5);
 
             var limit = 6;
             var copyToClipboard = false;
@@ -94,7 +90,7 @@ namespace SearchCommand
             }
 
             var msg = new StringBuilder();
-            msg.AppendLine($"Commands found ({results.Length}):");
+            msg.AppendLine($"Players found ({results.Length}):");
             foreach (var (player, i) in results.Select((r, i) => (r, i)))
             {
                 var copyReport = "";
@@ -109,7 +105,7 @@ namespace SearchCommand
 
                     if (showGps)
                     {
-                        DisplayGps(player);
+                        DisplayGps(player.Character);
                         gpsReport = "[gps]";
                     }
                 }
@@ -119,30 +115,5 @@ namespace SearchCommand
 
             Context.Respond(msg.ToString());
         });
-
-        void DisplayGps(MyPlayer player)
-        {
-            var gpsCollection = (MyGpsCollection) MyAPIGateway.Session?.GPS;
-            if (gpsCollection == null)
-            {
-                Context.Respond("GPS not available.", Color.Red);
-                return;
-            }
-
-            var gps = new MyGps
-            {
-                Coords = player.GetPosition(),
-                Name = $"!sp {player.DisplayName}",
-                GPSColor = Color.Green,
-                IsContainerGPS = true,
-                ShowOnHud = true,
-                DiscardAt = null,
-            };
-
-            gps.UpdateHash();
-            gps.SetEntity(player.Character);
-
-            gpsCollection.SendAddGps(Context.Player.IdentityId, ref gps, player.Character.EntityId);
-        }
     }
 }

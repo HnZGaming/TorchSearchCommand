@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Text;
-using NLog;
 using SearchCommand.Core;
 using Torch.Commands;
 using Torch.Commands.Permissions;
@@ -13,8 +12,6 @@ namespace SearchCommand
 {
     public sealed partial class SearchCommandModule : CommandModule
     {
-        static readonly ILogger Log = LogManager.GetCurrentClassLogger();
-
         [Command("sc", "Searches for commands by keywords. -limit=N the number of search results.")]
         [Permission(MyPromoteLevel.None)]
         public void SearchCommands() => this.CatchAndReport(() =>
