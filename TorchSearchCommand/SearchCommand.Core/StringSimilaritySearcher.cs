@@ -12,13 +12,13 @@ namespace SearchCommand.Core
         readonly char[] _splits = {' ', ',', '.', ':', ';', '/', '!', '?', '-'};
         readonly int _thresholdDistance;
         readonly List<string> _keywords;
-        readonly Dictionary<K, List<string>> _dictionary;
+        readonly Dictionary<K, HashSet<string>> _dictionary;
 
         public StringSimilaritySearcher(int thresholdDistance)
         {
             _thresholdDistance = thresholdDistance;
             _keywords = new List<string>();
-            _dictionary = new Dictionary<K, List<string>>();
+            _dictionary = new Dictionary<K, HashSet<string>>();
         }
 
         public bool HasAnyKeywords => _keywords.Any();
@@ -42,11 +42,11 @@ namespace SearchCommand.Core
         {
             if (!_dictionary.TryGetValue(key, out var words))
             {
-                words = new List<string>();
+                words = new HashSet<string>();
                 _dictionary.Add(key, words);
             }
 
-            words.AddRange(SplitWords(word));
+            words.UnionWith(SplitWords(word));
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -62,16 +62,17 @@ namespace SearchCommand.Core
             var scores = new Dictionary<K, float>();
             foreach (var (key, dictionaryWords) in _dictionary)
             {
-                var topScore = 0f;
+                var sumScore = 0f;
                 foreach (var lev in levs)
                 foreach (var word in dictionaryWords)
                 {
                     var score = CalcSimilarityScore(lev, word);
-                    topScore = Math.Max(topScore, score);
+                    score = (float) Math.Pow(score, 2);
+                    sumScore += score;
                 }
 
-                scores[key] = topScore;
-                Log.Trace($"'{string.Join(" ", _keywords)}', '{string.Join(" ", dictionaryWords)}' -> {topScore}");
+                scores[key] = sumScore;
+                Log.Trace($"'{string.Join(" ", _keywords)}', '{string.Join(" ", dictionaryWords)}' -> {sumScore}");
             }
 
             return scores.Select(kv => (kv.Key, kv.Value));
