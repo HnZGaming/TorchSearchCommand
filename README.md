@@ -25,5 +25,20 @@ How To Use
 
 ### Search Grids
 
-WIP
+```
+!sg <keyword(s)> -limit=N -copy -gps
+```
 
+### Options
+
+#### -limit=N
+
+Shows N number of search results.
+
+#### -copy
+
+Copies the top result to the clipboard.
+
+#### -gps
+
+Creates and shows the top result's GPS entity on the Player HUD.
