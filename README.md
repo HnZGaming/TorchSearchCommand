@@ -3,14 +3,14 @@ TorchSearchCommand
 
 Performs approximate string mathing, using Levenshtein distance algorithm. 
 
-Currently provides a set of "search commands" for Torch commands, players and grids. 
+Currently provides a set of "search commands" to look up Torch commands and game entities in the server. 
 
 Useful for: 
 
 1. Searching for a command's name and syntax help.
 1. Obtaining a complex grid/player name to the clipboard.
 
-Commands are available to general players but not all options are allowed.
+Commands are available to general players except game-breaking options.
 
 How To Install
 ---
