@@ -1,7 +1,7 @@
 TorchSearchCommand
 ===
 
-Performs approximate string mathing, using Levenshtein distance algorithm. 
+Performs approximate string matching, using Levenshtein distance algorithm. 
 
 Currently provides a set of "search commands" to look up Torch commands and game entities in the server. 
 
