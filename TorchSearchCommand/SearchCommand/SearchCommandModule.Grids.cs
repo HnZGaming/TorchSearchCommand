@@ -133,7 +133,10 @@ namespace SearchCommand
                     }
                 }
 
-                msg.AppendLine($"> \"{grid.DisplayName}\" {copyReport} {gpsReport}");
+                var owners = grid.GetBigOwnerPlayers();
+                var ownersStr = owners.Select(o => $"\"{o.DisplayName}\"").ToStringSeq();
+
+                msg.AppendLine($"> \"{grid.DisplayName}\" ({ownersStr}) {copyReport} {gpsReport}");
             }
 
             Context.Respond(msg.ToString());
