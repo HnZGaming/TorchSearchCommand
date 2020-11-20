@@ -162,10 +162,13 @@
         <Compile Include="TorchUtils\DebugUtils.cs" />
         <Compile Include="TorchUtils\DisposableCollection.cs" />
         <Compile Include="TorchUtils\DisposableUtils.cs" />
+        <Compile Include="TorchUtils\ObjectPool.cs" />
+        <Compile Include="TorchUtils\ReflectionUtils.cs" />
         <Compile Include="TorchUtils\StringFloatConverter.cs" />
         <Compile Include="TorchUtils\TaskUtils.cs" />
         <Compile Include="TorchUtils\ThreadPoolTask.cs" />
         <Compile Include="TorchUtils\ThreadSafeThrottle.cs" />
+        <Compile Include="TorchUtils\TickTaskSource.cs" />
         <Compile Include="TorchUtils\TorchPluginUtils.cs" />
         <Compile Include="TorchUtils\TorchUtils.cs" />
         <Compile Include="TorchUtils\ViewUtils.cs" />
