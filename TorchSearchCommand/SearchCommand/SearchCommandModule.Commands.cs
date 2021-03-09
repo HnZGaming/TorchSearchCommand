@@ -3,10 +3,10 @@ using System.Text;
 using SearchCommand.Core;
 using Torch.Commands;
 using Torch.Commands.Permissions;
-using TorchUtils;
 using VRage.Game.ModAPI;
 using VRageMath;
 using Torch.API.Managers;
+using Utils.Torch;
 
 namespace SearchCommand
 {

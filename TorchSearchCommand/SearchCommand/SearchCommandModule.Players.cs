@@ -4,7 +4,8 @@ using Sandbox.Game.World;
 using SearchCommand.Core;
 using Torch.Commands;
 using Torch.Commands.Permissions;
-using TorchUtils;
+using Utils.General;
+using Utils.Torch;
 using VRage.Game.ModAPI;
 using VRageMath;
 
@@ -99,7 +100,7 @@ namespace SearchCommand
                 {
                     if (copyToClipboard)
                     {
-                        ViewUtils.CopyToClipboard(player.DisplayName);
+                        WindowsUtils.CopyToClipboard(player.DisplayName);
                         copyReport = "[clipboard]";
                     }
 

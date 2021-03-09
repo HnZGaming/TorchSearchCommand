@@ -7,7 +7,8 @@ using SearchCommand.Core;
 using SpaceEngineers.Game.Entities.Blocks;
 using Torch.Commands;
 using Torch.Commands.Permissions;
-using TorchUtils;
+using Utils.General;
+using Utils.Torch;
 using VRage.Game.ModAPI;
 using VRageMath;
 
@@ -122,7 +123,7 @@ namespace SearchCommand
                 {
                     if (copyToClipboard)
                     {
-                        ViewUtils.CopyToClipboard(grid.DisplayName);
+                        WindowsUtils.CopyToClipboard(grid.DisplayName);
                         copyReport = "[clipboard]";
                     }
 

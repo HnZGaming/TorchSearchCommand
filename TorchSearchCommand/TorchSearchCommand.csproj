@@ -17,7 +17,7 @@
         <DebugType>full</DebugType>
         <Optimize>false</Optimize>
         <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <DefineConstants>DEBUG;TRACE;TORCH</DefineConstants>
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
@@ -26,11 +26,14 @@
         <DebugType>pdbonly</DebugType>
         <Optimize>true</Optimize>
         <OutputPath>bin\Release\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
+        <DefineConstants>TRACE;TORCH</DefineConstants>
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="HavokWrapper, Version=0.1.1.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\GameBinaries\HavokWrapper.dll</HintPath>
+        </Reference>
         <Reference Include="NLog">
             <HintPath>$(SolutionDir)\TorchBinaries\NLog.dll</HintPath>
         </Reference>
@@ -154,26 +157,6 @@
         <Compile Include="SearchCommand\SearchCommandModule.Grids.cs" />
         <Compile Include="SearchCommand\SearchCommandModule.Players.cs" />
         <Compile Include="SearchCommand\SearchCommandPlugin.cs" />
-        <Compile Include="TorchUtils\AbsJsonConverter.cs" />
-        <Compile Include="TorchUtils\ActionDisposable.cs" />
-        <Compile Include="TorchUtils\CollectionUtils.cs" />
-        <Compile Include="TorchUtils\CommandErrorResponseGenerator.cs" />
-        <Compile Include="TorchUtils\CommandOption.cs" />
-        <Compile Include="TorchUtils\DebugUtils.cs" />
-        <Compile Include="TorchUtils\DisposableCollection.cs" />
-        <Compile Include="TorchUtils\DisposableUtils.cs" />
-        <Compile Include="TorchUtils\ObjectPool.cs" />
-        <Compile Include="TorchUtils\ReflectionUtils.cs" />
-        <Compile Include="TorchUtils\StringFloatConverter.cs" />
-        <Compile Include="TorchUtils\TaskUtils.cs" />
-        <Compile Include="TorchUtils\ThreadPoolTask.cs" />
-        <Compile Include="TorchUtils\ThreadSafeThrottle.cs" />
-        <Compile Include="TorchUtils\TickTaskSource.cs" />
-        <Compile Include="TorchUtils\TorchPluginUtils.cs" />
-        <Compile Include="TorchUtils\TorchUtils.cs" />
-        <Compile Include="TorchUtils\ViewUtils.cs" />
-        <Compile Include="TorchUtils\VRageUtils.cs" />
-        <Compile Include="TorchUtils\XmlUtils.cs" />
     </ItemGroup>
     <ItemGroup>
       <Content Include="manifest.xml" />
@@ -192,5 +175,7 @@
             [ -z "$NoDeploy" ] || $(ProjectDir)postbuild.bat $(ProjectName) $(SolutionDir)
         </PostBuildEvent>
     </PropertyGroup>
+    <Import Project="..\TorchUtils\Utils.General\Utils.General.projitems" Label="Shared" />
+    <Import Project="..\TorchUtils\Utils.Torch\Utils.Torch.projitems" Label="Shared" />
 
 </Project>
