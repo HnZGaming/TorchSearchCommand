@@ -11,6 +11,9 @@ namespace SearchCommand
     {
         static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
+        SearchCommandPlugin Plugin => (SearchCommandPlugin) Context.Plugin;
+        SearchCommandConfig Config => Plugin.Config;
+
         void DisplayGps(IMyEntity entity)
         {
             var gpsCollection = (MyGpsCollection) MyAPIGateway.Session?.GPS;

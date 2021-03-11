@@ -25,8 +25,7 @@ namespace SearchCommand
         {
             var searcher = new StringSimilaritySearcher<MyCubeGrid>(5);
 
-            var limit = 6;
-            var copyToClipboard = false;
+            var limit = Config.DefaultResultLength;
             var showGps = false;
 
             foreach (var arg in Context.Args)
@@ -36,12 +35,6 @@ namespace SearchCommand
                     if (option.TryParse("limit", out var optionValue)
                         && int.TryParse(optionValue, out limit))
                     {
-                        continue;
-                    }
-
-                    if (option.IsParameterless("copy"))
-                    {
-                        copyToClipboard = true;
                         continue;
                     }
 
