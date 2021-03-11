@@ -4,7 +4,6 @@ using Sandbox.Game.World;
 using SearchCommand.Core;
 using Torch.Commands;
 using Torch.Commands.Permissions;
-using Utils.General;
 using Utils.Torch;
 using VRage.Game.ModAPI;
 using VRageMath;
@@ -16,15 +15,13 @@ namespace SearchCommand
         [Command("sp", "Searches for players by keywords." +
                        " Supports player names, Steam ID, faction name, faction tag." +
                        " -limit=N the number of search results." +
-                       " -copy 1st result to clipboard." +
                        " Display -gps for 1st result.")]
         [Permission(MyPromoteLevel.None)]
         public void SearchPlayers() => this.CatchAndReport(() =>
         {
             var searcher = new StringSimilaritySearcher<MyPlayer>(5);
 
-            var limit = 6;
-            var copyToClipboard = false;
+            var limit = Config.DefaultResultLength;
             var showGps = false;
 
             foreach (var arg in Context.Args)
@@ -34,12 +31,6 @@ namespace SearchCommand
                     if (option.TryParse("limit", out var optionValue)
                         && int.TryParse(optionValue, out limit))
                     {
-                        continue;
-                    }
-
-                    if (option.IsParameterless("copy"))
-                    {
-                        copyToClipboard = true;
                         continue;
                     }
 
@@ -94,16 +85,9 @@ namespace SearchCommand
             msg.AppendLine($"Players found ({results.Length}):");
             foreach (var (player, i) in results.Select((r, i) => (r, i)))
             {
-                var copyReport = "";
                 var gpsReport = "";
                 if (i == 0)
                 {
-                    if (copyToClipboard)
-                    {
-                        WindowsUtils.CopyToClipboard(player.DisplayName);
-                        copyReport = "[clipboard]";
-                    }
-
                     if (showGps)
                     {
                         DisplayGps(player.Character);
@@ -111,7 +95,7 @@ namespace SearchCommand
                     }
                 }
 
-                msg.AppendLine($"> {player.DisplayName} ({player.SteamId()}) {copyReport} {gpsReport}");
+                msg.AppendLine($"> {player.DisplayName} ({player.SteamId()}) {gpsReport}");
             }
 
             Context.Respond(msg.ToString());

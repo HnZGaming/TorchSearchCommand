@@ -18,7 +18,7 @@ namespace SearchCommand
         {
             var searcher = new StringSimilaritySearcher<Command>(5);
 
-            var limit = 3; //default
+            var limit = Config.DefaultResultLength; //default
 
             foreach (var arg in Context.Args)
             {

@@ -152,6 +152,7 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="SearchCommand.Core\Levenshtein.cs" />
         <Compile Include="SearchCommand.Core\StringSimilaritySearcher.cs" />
+        <Compile Include="SearchCommand\SearchCommandConfig.cs" />
         <Compile Include="SearchCommand\SearchCommandModule.Commands.cs" />
         <Compile Include="SearchCommand\SearchCommandModule.cs" />
         <Compile Include="SearchCommand\SearchCommandModule.Grids.cs" />
