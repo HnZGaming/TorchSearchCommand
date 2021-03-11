@@ -19,7 +19,6 @@ namespace SearchCommand
         [Command("sg", "Searches for grids by keywords." +
                        " Supports grid names and faction tag." +
                        " -limit=N the number of search results." +
-                       " -copy 1st result to clipboard." +
                        " Display -gps for 1st result.")]
         [Permission(MyPromoteLevel.None)]
         public void SearchGrids() => this.CatchAndReport(async () =>
@@ -117,16 +116,9 @@ namespace SearchCommand
             msg.AppendLine($"Grids found ({results.Length}):");
             foreach (var (grid, i) in results.Select((r, i) => (r, i)))
             {
-                var copyReport = "";
                 var gpsReport = "";
                 if (i == 0)
                 {
-                    if (copyToClipboard)
-                    {
-                        WindowsUtils.CopyToClipboard(grid.DisplayName);
-                        copyReport = "[clipboard]";
-                    }
-
                     if (showGps)
                     {
                         DisplayGps(grid);
@@ -137,7 +129,7 @@ namespace SearchCommand
                 var owners = grid.GetBigOwnerPlayers();
                 var ownersStr = owners.Select(o => $"\"{o.DisplayName}\"").ToStringSeq();
 
-                msg.AppendLine($"> \"{grid.DisplayName}\" ({ownersStr}) {copyReport} {gpsReport}");
+                msg.AppendLine($"> \"{grid.DisplayName}\" ({ownersStr}) {gpsReport}");
             }
 
             Context.Respond(msg.ToString());
