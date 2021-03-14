@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using NLog;
+using Utils.General;
 
 namespace SearchCommand.Core
 {
-    public class StringSimilaritySearcher<K>
+    public class StringSimilaritySearcher<K> : IStringSearcher<K>
     {
         readonly ILogger Log = LogManager.GetCurrentClassLogger();
         readonly char[] _splits = {' ', ',', '.', ':', ';', '/', '!', '?', '-'};
@@ -22,6 +23,7 @@ namespace SearchCommand.Core
         }
 
         public bool HasAnyKeywords => _keywords.Any();
+        public string Keywords => _keywords.ToStringSeq();
 
         IEnumerable<string> SplitWords(string self)
         {
@@ -96,7 +98,7 @@ namespace SearchCommand.Core
             return _thresholdDistance - distance;
         }
 
-        public K[] CalcSimilarityAndOrder(int limit)
+        public K[] OrderSimilarWords(int limit)
         {
             return CalcSimilarity()
                 .OrderByDescending(md => md.Similarity)

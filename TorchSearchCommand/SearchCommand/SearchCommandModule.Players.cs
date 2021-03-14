@@ -74,7 +74,7 @@ namespace SearchCommand
                 }
             }
 
-            var results = searcher.CalcSimilarityAndOrder(limit);
+            var results = searcher.OrderSimilarWords(limit);
             if (!results.Any())
             {
                 Context.Respond($"Player not found by keyword(s): \"{Context.RawArgs}\"");

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ParallelTasks;
@@ -21,12 +22,13 @@ namespace SearchCommand
                        " -limit=N the number of search results." +
                        " Display -gps for 1st result.")]
         [Permission(MyPromoteLevel.None)]
-        public void SearchGrids() => this.CatchAndReport(async () =>
+        public void SearchGrids() => this.CatchAndReport(() =>
         {
-            var searcher = new StringSimilaritySearcher<MyCubeGrid>(5);
-
             var limit = Config.DefaultResultLength;
             var showGps = false;
+            var distance = 0d;
+            var useRegex = false;
+            var keywords = new List<string>();
 
             foreach (var arg in Context.Args)
             {
@@ -50,16 +52,39 @@ namespace SearchCommand
                         continue;
                     }
 
+                    if (option.TryParseDouble("distance", out distance))
+                    {
+                        continue;
+                    }
+
+                    if (option.IsParameterless("regex"))
+                    {
+                        useRegex = true;
+                        continue;
+                    }
+
                     Context.Respond($"Unknown option: {arg}", Color.Red);
                     return;
                 }
 
-                searcher.AddKeyword(arg);
+                keywords.Add(arg);
+            }
+
+            if (distance > 0 && Context.Player == null)
+            {
+                throw new Exception("Distance parameter is available for in-game players only");
+            }
+
+            var searcher = useRegex
+                ? (IStringSearcher<MyCubeGrid>) new RegexStringSearcher<MyCubeGrid>()
+                : new StringSimilaritySearcher<MyCubeGrid>(5);
+
+            foreach (var keyword in keywords)
+            {
+                searcher.AddKeyword(keyword);
             }
 
             Context.Respond("Searching...");
-
-            await TaskUtils.MoveToThreadPool();
 
             var grids = MyCubeGridGroups.Static.Logical.Groups
                 .SelectMany(g => g.Nodes)
@@ -69,6 +94,13 @@ namespace SearchCommand
             Parallel.ForEach(grids, grid =>
             {
                 if (grid == null) return;
+
+                if (distance > 0)
+                {
+                    var callerPosition = Context.Player.Character.GetPosition();
+                    var gridPosition = grid.PositionComp.GetPosition();
+                    if (Vector3D.Distance(callerPosition, gridPosition) > distance) return;
+                }
 
                 var callerIsOwner = grid.BigOwners.Contains(Context.Player?.IdentityId ?? 0);
                 var callerIsAdmin = Context.Player == null || Context.Player?.PromoteLevel > MyPromoteLevel.None;
@@ -98,10 +130,10 @@ namespace SearchCommand
                 }
             });
 
-            var results = searcher.CalcSimilarityAndOrder(limit);
+            var results = searcher.OrderSimilarWords(limit);
             if (!results.Any())
             {
-                Context.Respond($"Grid not found by keyword(s): \"{Context.RawArgs}\"");
+                Context.Respond($"Grid not found: \"{searcher.Keywords}\"");
                 return;
             }
 
