@@ -150,7 +150,9 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="SearchCommand.Core\IStringSearcher.cs" />
         <Compile Include="SearchCommand.Core\Levenshtein.cs" />
+        <Compile Include="SearchCommand.Core\RegexStringSearcher.cs" />
         <Compile Include="SearchCommand.Core\StringSimilaritySearcher.cs" />
         <Compile Include="SearchCommand\SearchCommandConfig.cs" />
         <Compile Include="SearchCommand\SearchCommandModule.Commands.cs" />

@@ -61,7 +61,7 @@ namespace SearchCommand
                 searcher.AddDictionaryWord(command, command.Description ?? "");
             }
 
-            var results = searcher.CalcSimilarityAndOrder(limit);
+            var results = searcher.OrderSimilarWords(limit);
             if (!results.Any())
             {
                 Context.Respond($"Command not found by keyword(s): \"{Context.RawArgs}\"");
