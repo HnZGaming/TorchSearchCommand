@@ -15,7 +15,7 @@ Commands are available to general players except game-breaking options.
 How To Install
 ---
 
-Prop it in the Plugin folder.
+https://torchapi.net/plugins/item/f1002b90-6c08-4939-8843-628e4323965d
 
 How To Use
 ---
@@ -43,6 +43,14 @@ How To Use
 #### -limit=N
 
 Shows N number of search results.
+
+#### -regex
+
+Interprets the keyword in regular expression.
+
+#### -distance
+
+Filter by the distance from the caller's character entity.
 
 #### -copy
 

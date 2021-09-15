@@ -20,7 +20,9 @@ namespace SearchCommand
         [Command("sg", "Searches for grids by keywords." +
                        " Supports grid names and faction tag." +
                        " -limit=N the number of search results." +
-                       " Display -gps for 1st result.")]
+                       " Display -gps for 1st result." +
+                       " Use --regex for advanced search." +
+                       " Filter -distance=N from your character.")]
         [Permission(MyPromoteLevel.None)]
         public void SearchGrids() => this.CatchAndReport(() =>
         {
