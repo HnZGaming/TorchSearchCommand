@@ -56,7 +56,8 @@ namespace SearchCommand
                 if (command == null) continue; // idk why this is a thing
 
                 if (command.MinimumPromoteLevel > playerPromoteLevel) continue;
-
+                
+                searcher.AddDictionaryWord(command, commandNode.Name);
                 searcher.AddDictionaryWord(command, command.Name);
                 searcher.AddDictionaryWord(command, command.Description ?? "");
             }

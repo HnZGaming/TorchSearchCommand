@@ -36,7 +36,7 @@ namespace SearchCommand
             gps.UpdateHash();
             gps.SetEntity(entity);
 
-            gpsCollection.SendAddGps(Context.Player.IdentityId, ref gps, entity.EntityId);
+            gpsCollection.SendAddGpsRequest(Context.Player.IdentityId, ref gps, entity.EntityId);
         }
     }
 }
