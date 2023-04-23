@@ -26,6 +26,12 @@ How To Use
 !sc <keyword(s)> --limit=N
 ```
 
+example 
+
+```
+!sc hangar load --limit=20
+```
+
 ### Search Online Players
 
 ```
