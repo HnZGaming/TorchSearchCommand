@@ -6,6 +6,8 @@ using Torch.Commands.Permissions;
 using VRage.Game.ModAPI;
 using VRageMath;
 using Torch.API.Managers;
+using Torch.Mod;
+using Torch.Mod.Messages;
 using Utils.Torch;
 
 namespace SearchCommand
@@ -56,7 +58,7 @@ namespace SearchCommand
                 if (command == null) continue; // idk why this is a thing
 
                 if (command.MinimumPromoteLevel > playerPromoteLevel) continue;
-                
+
                 searcher.AddDictionaryWord(command, commandNode.Name);
                 searcher.AddDictionaryWord(command, command.Name);
                 searcher.AddDictionaryWord(command, command.Description ?? "");
@@ -73,11 +75,18 @@ namespace SearchCommand
             msg.AppendLine($"Commands found ({results.Length}):");
             foreach (var resultCommand in results)
             {
-                msg.AppendLine($"{resultCommand.SyntaxHelp}");
-                msg.AppendLine($" -- {resultCommand.Description}");
+                msg.AppendLine($"{resultCommand.SyntaxHelp} -- {resultCommand.Description} (in {resultCommand.Plugin?.Name ?? "?"})");
             }
 
-            Context.Respond(msg.ToString());
+            if (player == null) // command sent from server terminal or Discord chat
+            {
+                Context.Respond(msg.ToString());
+            }
+            else
+            {
+                var m = new DialogMessage("Torch Help", "Command Search:", msg.ToString());
+                ModCommunication.SendMessageTo(m, Context.Player.SteamUserId);
+            }
         });
     }
 }
