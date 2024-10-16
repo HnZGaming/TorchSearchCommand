@@ -27,7 +27,7 @@ namespace SearchCommand
         public void SearchGrids() => this.CatchAndReport(() =>
         {
             var limit = Config.DefaultResultLength;
-            var showGps = false;
+            var gpsCount = 0;
             var distance = 0d;
             var useRegex = false;
             var keywords = new List<string>();
@@ -50,7 +50,19 @@ namespace SearchCommand
                             return;
                         }
 
-                        showGps = true;
+                        gpsCount = 1;
+                        continue;
+                    }
+
+                    if (option.TryParseInt("gps", out var gpsCountLocal))
+                    {
+                        if (Context.Player == null)
+                        {
+                            Context.Respond("GPS option requires player.", Color.Red);
+                            return;
+                        }
+
+                        gpsCount = gpsCountLocal;
                         continue;
                     }
 
@@ -78,7 +90,7 @@ namespace SearchCommand
             }
 
             var searcher = useRegex
-                ? (IStringSearcher<MyCubeGrid>) new RegexStringSearcher<MyCubeGrid>()
+                ? (IStringSearcher<MyCubeGrid>)new RegexStringSearcher<MyCubeGrid>()
                 : new StringSimilaritySearcher<MyCubeGrid>(5);
 
             foreach (var keyword in keywords)
@@ -144,13 +156,10 @@ namespace SearchCommand
             foreach (var (grid, i) in results.Select((r, i) => (r, i)))
             {
                 var gpsReport = "";
-                if (i == 0)
+                if (i + 1 < gpsCount)
                 {
-                    if (showGps)
-                    {
-                        DisplayGps(grid);
-                        gpsReport = "[gps]";
-                    }
+                    DisplayGps(grid);
+                    gpsReport = "[gps]";
                 }
 
                 var owners = grid.GetBigOwnerPlayers();
