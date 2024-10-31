@@ -156,7 +156,7 @@ namespace SearchCommand
             foreach (var (grid, i) in results.Select((r, i) => (r, i)))
             {
                 var gpsReport = "";
-                if (i + 1 < gpsCount)
+                if (i < gpsCount)
                 {
                     DisplayGps(grid);
                     gpsReport = "[gps]";
