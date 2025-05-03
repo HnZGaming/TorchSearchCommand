@@ -44,24 +44,12 @@ namespace SearchCommand
 
                     if (option.IsParameterless("gps"))
                     {
-                        if (Context.Player == null)
-                        {
-                            Context.Respond("GPS option requires player.", Color.Red);
-                            return;
-                        }
-
                         gpsCount = 1;
                         continue;
                     }
 
                     if (option.TryParseInt("gps", out var gpsCountLocal))
                     {
-                        if (Context.Player == null)
-                        {
-                            Context.Respond("GPS option requires player.", Color.Red);
-                            return;
-                        }
-
                         gpsCount = gpsCountLocal;
                         continue;
                     }
@@ -158,8 +146,15 @@ namespace SearchCommand
                 var gpsReport = "";
                 if (i < gpsCount)
                 {
-                    DisplayGps(grid);
-                    gpsReport = "[gps]";
+                    if (Context.Player != null)
+                    {
+                        DisplayGps(grid);
+                        gpsReport = "[gps]";
+                    }
+                    else
+                    {
+                        gpsReport = VRageUtils.MakeGpsString(grid.DisplayName, grid.GetPosition());
+                    }
                 }
 
                 var owners = grid.GetBigOwnerPlayers();
