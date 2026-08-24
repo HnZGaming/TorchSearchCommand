@@ -18,7 +18,7 @@ namespace SearchCommand
         {
             base.Init(torch);
 
-            var configPath = this.MakeConfigFilePath();
+            var configPath = this.MakeFilePath($"{nameof(SearchCommandPlugin)}.cfg");
             _config = Persistent<SearchCommandConfig>.Load(configPath);
         }
     }

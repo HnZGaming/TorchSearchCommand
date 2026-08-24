@@ -14,7 +14,7 @@ namespace SearchCommand
 {
     public sealed partial class SearchCommandModule : CommandModule
     {
-        [Command("sc", "Searches for commands by keywords. -limit=N the number of search results.")]
+        [Command("sc", "Searches for commands by keywords. --limit=N the number of search results.")]
         [Permission(MyPromoteLevel.None)]
         public void SearchCommands() => this.CatchAndReport(() =>
         {

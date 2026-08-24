@@ -14,8 +14,8 @@ namespace SearchCommand
     {
         [Command("sp", "Searches for players by keywords." +
                        " Supports player names, Steam ID, faction name, faction tag." +
-                       " -limit=N the number of search results." +
-                       " Display -gps for 1st result.")]
+                       " --limit=N the number of search results." +
+                       " Display --gps for 1st result.")]
         [Permission(MyPromoteLevel.None)]
         public void SearchPlayers() => this.CatchAndReport(() =>
         {

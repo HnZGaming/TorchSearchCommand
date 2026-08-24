@@ -19,15 +19,15 @@ namespace SearchCommand
     {
         [Command("sg", "Searches for grids by keywords." +
                        " Supports grid names and faction tag." +
-                       " -limit=N the number of search results." +
-                       " Display -gps for 1st result." +
+                       " --limit=N the number of search results." +
+                       " Display --gps for 1st result." +
                        " Use --regex for advanced search." +
-                       " Filter -distance=N from your character.")]
+                       " Filter --distance=N from your character.")]
         [Permission(MyPromoteLevel.None)]
         public void SearchGrids() => this.CatchAndReport(() =>
         {
             var limit = Config.DefaultResultLength;
-            var showGps = false;
+            var gpsCount = 0;
             var distance = 0d;
             var useRegex = false;
             var keywords = new List<string>();
@@ -44,13 +44,13 @@ namespace SearchCommand
 
                     if (option.IsParameterless("gps"))
                     {
-                        if (Context.Player == null)
-                        {
-                            Context.Respond("GPS option requires player.", Color.Red);
-                            return;
-                        }
+                        gpsCount = 1;
+                        continue;
+                    }
 
-                        showGps = true;
+                    if (option.TryParseInt("gps", out var gpsCountLocal))
+                    {
+                        gpsCount = gpsCountLocal;
                         continue;
                     }
 
@@ -78,7 +78,7 @@ namespace SearchCommand
             }
 
             var searcher = useRegex
-                ? (IStringSearcher<MyCubeGrid>) new RegexStringSearcher<MyCubeGrid>()
+                ? (IStringSearcher<MyCubeGrid>)new RegexStringSearcher<MyCubeGrid>()
                 : new StringSimilaritySearcher<MyCubeGrid>(5);
 
             foreach (var keyword in keywords)
@@ -144,12 +144,16 @@ namespace SearchCommand
             foreach (var (grid, i) in results.Select((r, i) => (r, i)))
             {
                 var gpsReport = "";
-                if (i == 0)
+                if (i < gpsCount)
                 {
-                    if (showGps)
+                    if (Context.Player != null)
                     {
                         DisplayGps(grid);
                         gpsReport = "[gps]";
+                    }
+                    else
+                    {
+                        gpsReport = VRageUtils.MakeGpsString(grid.DisplayName, grid.GetPosition());
                     }
                 }
 
